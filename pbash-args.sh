@@ -62,7 +62,7 @@ function pbash.args.show_doc() {
   return 1
 }
 
-complete -W "-s --short -l --long -d --default-value -o --out-values-var -r --remaining-args-var" pbash.args.extract
+complete -W "-s --short -l --long -d --default-value -o --out-values-var -r --remaining-args-var --help" pbash.args.extract
 function pbash.args.extract() {
   pbash.args.show_doc "$@" "$(cat<<EOF
 pbash.args.extract parse args and update the value of arg in a local varible name provided in -o/--out-values-var.
