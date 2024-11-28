@@ -30,7 +30,7 @@ function pbash.args.errors.is_error() {
 }
 
 function pbash.args.errors.is_success() {
-  pbu.errors.is_error "$@" || return $PBASH_ARGS_SUCCESS
+  pbash.args.errors.is_error "$@" || return $PBASH_ARGS_SUCCESS
   return $PBASH_ARGS_ERROR
 }
 
