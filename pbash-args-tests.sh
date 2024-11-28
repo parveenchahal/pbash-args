@@ -1,4 +1,4 @@
-source <(wget -q -O - https://raw.githubusercontent.com/parveenchahal/pbash-args/refs/heads/main/pbash-args.sh)
+source <(wget -q -O - https://pbash.pcapis.com/args/pbash-args.sh)
 
 result=()
 
