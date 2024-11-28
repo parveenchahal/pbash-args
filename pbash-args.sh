@@ -1,5 +1,18 @@
 #!/bin/bash
 
+function pbash.args.__updates.need_update {
+  local x="$(wget -q -O - https://raw.githubusercontent.com/parveenchahal/pbash-args/refs/heads/main/pbash-args.sh | sha256sum | head -c 64)"
+  local y="$(cat /usr/bin/pbash-args.sh | sha256sum | head -c 64)"
+  [ "$x" == "$y" ] || return 1
+  return 0
+}
+
+function pbash.args.update() {
+  wget -q -O - https://raw.githubusercontent.com/parveenchahal/pbash-args/refs/heads/main/install.sh | bash
+}
+
+pbash.args.__updates.need_update || echo "pbash-args.sh has a version available. Run 'pbash.args.update'"
+
 PBASH_ARGS_SUCCESS=0
 PBASH_ARGS_ERROR=1
 PBASH_ARGS_ERROR_USAGE=2
