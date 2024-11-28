@@ -65,6 +65,14 @@ function pbash.args.show_doc() {
 complete -W "-s --short -l --long -d --default-value -o --out-values-var -r --remaining-args-var" pbash.args.extract
 function pbash.args.extract() {
   pbash.args.show_doc "$@" "$(cat<<EOF
+pbash.args.extract parse args and update the value of arg in a local varible name provided in -o/--out-values-var.
+
+Usage:
+arg1_val=""
+pbash.args.extract --l arg1 -o arg1_val -- --arg1 abc
+
+Value of arg1 will be updated in arg1_val.
+
 Options:
 -s, --short               Short argument key
 -l, --long                Long argument key
