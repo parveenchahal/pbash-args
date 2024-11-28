@@ -5,6 +5,12 @@ PBASH_ARGS_ERROR=1
 PBASH_ARGS_ERROR_USAGE=2
 PBASH_ARGS_ERROR_NOT_FOUND=40
 
+function pbash.args.error.get_error_code() {
+  local err="$?"
+  [ "$1" == "" ] || err="$1"
+  printf "%s" "$err"
+}
+
 function pbash.args.error.echo() {
   local err="$?"
   echo -e "\e[01;31m${@}\e[0m"
