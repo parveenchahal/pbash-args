@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function pbash.args.__updates.need_update {
-  local x="$(wget -q -O - https://raw.githubusercontent.com/parveenchahal/pbash-args/refs/heads/main/pbash-args.sh | sha256sum | head -c 64)"
+  local x="$(wget -q -O - https://pbash.pcapis.com/args/pbash-args.sh | sha256sum | head -c 64)"
   local e="$(echo -n | sha256sum | head -c 64)"
   [[ "$x" == "$e" ]] && return 0
   
@@ -11,7 +11,7 @@ function pbash.args.__updates.need_update {
   return 0
 }
 
-pbash.args.__updates.need_update || echo "WARNING: pbash-args.sh has a version available. Run 'wget -q -O - https://raw.githubusercontent.com/parveenchahal/pbash-args/refs/heads/main/install.sh | sudo bash'"
+pbash.args.__updates.need_update || echo "WARNING: pbash-args.sh has a version available. Run 'wget -q -O - https://pbash.pcapis.com/args/install.sh | sudo bash'"
 
 PBASH_ARGS_SUCCESS=0
 PBASH_ARGS_ERROR=1
