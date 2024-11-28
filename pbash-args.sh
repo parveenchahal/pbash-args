@@ -12,7 +12,7 @@ function pbash.args.__updates.need_update {
 }
 
 function pbash.args.update() {
-  wget -q -O - https://raw.githubusercontent.com/parveenchahal/pbash-args/refs/heads/main/install.sh | bash
+  wget -q -O - https://raw.githubusercontent.com/parveenchahal/pbash-args/refs/heads/main/install.sh | sudo bash
 }
 
 pbash.args.__updates.need_update || echo "pbash-args.sh has a version available. Run 'pbash.args.update'"
