@@ -57,6 +57,14 @@ function pbash.args.has_help() {
 
 complete -W "-s --short -l --long -d --default-value -o --out-values-var -r --remaining-args-var" pbash.args.extract
 function pbash.args.extract() {
+  pbash.args.has_help "$@" && cat<<EOF
+Options:
+-s, --short               Short argument key
+-l, --long                Long argument key
+-d, --default             Default value if arg is not provided
+-o, --out-values-var      A local varible name where output will be updated
+-r, --remaining-args-var  Remaining argument list, excluding key and value of -s/--short and -l/--long
+EOF
   local _____SPLITED_ARGS1_____=()
   local _____SPLITED_ARGS2_____=()
   ___pbash_split_args_by_double_hyphen___ "$@" || return $PBASH_ARGS_ERROR_USAGE
