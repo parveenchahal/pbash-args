@@ -3,7 +3,7 @@
 function pbash.args.__updates.need_update {
   local x="$(wget -q -O - https://raw.githubusercontent.com/parveenchahal/pbash-args/refs/heads/main/pbash-args.sh | sha256sum | head -c 64)"
   local e="$(echo -n | sha256sum | head -c 64)"
-  [ "$x" == "$e" ] || return 0
+  [[ "$x" == "$e" ]] && return 0
   
   local y="$(cat /usr/bin/pbash-args.sh | sha256sum | head -c 64)"
   
