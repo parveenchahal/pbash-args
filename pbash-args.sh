@@ -89,7 +89,7 @@ function pbash.args.delete() {
   pbash.args.extract -s 'o:' -l 'out-values-var:' -o pbash_args_delete_out_values_var_name -- "${internal_args[@]}"
   local err=$?
   pbash.args.errors.is_not_found_error $err && pbash.args.errors.echo "-o/--out-values-var is required arg"
-  pbash.errors.is_error $err && return $err
+  pbash.args.errors.is_error $err && return $err
 
   pbash.args.extract -r $pbash_args_delete_out_values_var_name "${internal_args[@]}" -- "${external_args[@]}"
   local err=$?
@@ -130,7 +130,7 @@ function pbash.args.is_switch_arg_enabled() {
   pbash.args.extract -o pbash_args_is_switch_arg_enabled_value "${internal_args[@]}" -- "${external_args[@]}"
   local err=$?
 
-  pbash.errors.is_success $err || return $err
+  pbash.args.errors.is_success $err || return $err
 
   [ "$pbash_args_is_switch_arg_enabled_value" == "false" ] && return 1
   [ "$pbash_args_is_switch_arg_enabled_value" == "true" ] && return 0
@@ -183,19 +183,19 @@ function pbash.args.atleast_one_arg_present() {
   local short_args=()
   pbash.args.extract -s 's:' -l 'short:' -o short_args -- "${internal_args[@]}"
   local err=$?
-  pbash.errors.is_success $err || pbash.args.errors.is_not_found_error $err || return $err
+  pbash.args.errors.is_success $err || pbash.args.errors.is_not_found_error $err || return $err
 
   local long_args=()
   pbash.args.extract -s 'l:' -l 'long:' -o long_args -- "${internal_args[@]}"
   local err=$?
-  pbash.errors.is_success $err || pbash.args.errors.is_not_found_error $err || return $err
+  pbash.args.errors.is_success $err || pbash.args.errors.is_not_found_error $err || return $err
 
   local k
   for k in "${short_args[@]}"
   do
     pbash.args.extract -s "$k" -- "${external_args[@]}"
     err=$?
-    pbash.errors.is_success $err && return $PBASH_ARGS_SUCCESS
+    pbash.args.errors.is_success $err && return $PBASH_ARGS_SUCCESS
     pbash.args.errors.is_not_found_error $err || return $err
   done
 
@@ -203,7 +203,7 @@ function pbash.args.atleast_one_arg_present() {
   do
     pbash.args.extract -l "$k" -- "${external_args[@]}"
     err=$?
-    pbash.errors.is_success $err && return $PBASH_ARGS_SUCCESS
+    pbash.args.errors.is_success $err && return $PBASH_ARGS_SUCCESS
     pbash.args.errors.is_not_found_error $err || return $err
   done
   return $PBASH_ARGS_ERROR
@@ -220,26 +220,26 @@ function pbash.args.all_args_present() {
   local short_args=()
   pbash.args.extract -s 's:' -l 'short:' -o short_args -- "${internal_args[@]}"
   local err=$?
-  pbash.errors.is_success $err || pbash.args.errors.is_not_found_error $err || return $err
+  pbash.args.errors.is_success $err || pbash.args.errors.is_not_found_error $err || return $err
 
   local long_args=()
   pbash.args.extract -s 'l:' -l 'long:' -o long_args -- "${internal_args[@]}"
   local err=$?
-  pbash.errors.is_success $err || pbash.args.errors.is_not_found_error $err || return $err
+  pbash.args.errors.is_success $err || pbash.args.errors.is_not_found_error $err || return $err
 
   local k
   for k in "${short_args[@]}"
   do
     pbash.args.extract -s "$k" -- "${external_args[@]}"
     err=$?
-    pbash.errors.is_success $err || return $err
+    pbash.args.errors.is_success $err || return $err
   done
 
   for k in "${long_args[@]}"
   do
     pbash.args.extract -l "$k" -- "${external_args[@]}"
     err=$?
-    pbash.errors.is_success $err || return $err
+    pbash.args.errors.is_success $err || return $err
   done
 
   return $PBASH_ARGS_SUCCESS
