@@ -1,67 +1,5 @@
 #!/bin/bash
 
-function pbash.args.__updates.need_update {
-  local x="$(wget -q -O - https://pbash.pcapis.com/args/pbash-args.sh | sha256sum | head -c 64)"
-  local e="$(echo -n | sha256sum | head -c 64)"
-  [[ "$x" == "$e" ]] && return 0
-  
-  local y="$(cat /usr/bin/pbash-args.sh | sha256sum | head -c 64)"
-  
-  [ "$x" == "$y" ] || return 1
-  return 0
-}
-
-pbash.args.__updates.need_update || echo "WARNING: pbash-args.sh has a version available. Run 'wget -q -O - https://pbash.pcapis.com/args/install.sh | sudo bash'"
-
-PBASH_ARGS_SUCCESS=0
-PBASH_ARGS_ERROR=1
-PBASH_ARGS_ERROR_USAGE=2
-PBASH_ARGS_ERROR_NOT_FOUND=40
-
-function pbash.args.errors.get_error_code() {
-  local err="$?"
-  [ "$1" == "" ] || err="$1"
-  printf "%s" "$err"
-}
-
-function pbash.args.errors.echo() {
-  local err="$?"
-  echo -e "\e[01;31m${@}\e[0m"
-  return $err
-}
-
-function pbash.args.errors.is_not_found_error() {
-  local err="$(pbash.args.errors.get_error_code "$@")"
-  [ "$err" == "$PBASH_ARGS_ERROR_NOT_FOUND" ] || return $PBASH_ARGS_ERROR
-  return $PBASH_ARGS_SUCCESS
-}
-
-function pbash.args.errors.is_error() {
-  local err="$(pbash.args.errors.get_error_code "$@")"
-  [ "$err" != "$PBASH_ARGS_SUCCESS" ] || return $PBASH_ARGS_ERROR
-  return $PBASH_ARGS_SUCCESS
-}
-
-function pbash.args.errors.is_success() {
-  pbash.args.errors.is_error "$@" || return $PBASH_ARGS_SUCCESS
-  return $PBASH_ARGS_ERROR
-}
-
-function pbash.args.has_help() {
-  for x in "$@"
-  do
-    [[ "$x" == "--help" ]] && return 0
-  done
-  return 1
-}
-
-function pbash.args.show_doc() {
-  local show_doc=true
-  pbash.args.has_help "$@" || show_doc=false
-  [ "$show_doc" == "true" ] && echo "${@: -1}" && return 0
-  return 1
-}
-
 complete -W "-s --short -l --long -d --default-value -o --out-values-var -r --remaining-args-var --help" pbash.args.extract
 function pbash.args.extract() {
   pbash.args.show_doc "$@" "$(cat<<EOF
@@ -289,6 +227,74 @@ function pbash.args.all_args_present() {
   done
 
   return $PBASH_ARGS_SUCCESS
+}
+
+
+#============================================================================
+function pbash.args.has_help() {
+  for x in "$@"
+  do
+    [[ "$x" == "--help" ]] && return 0
+  done
+  return 1
+}
+
+function pbash.args.show_doc() {
+  local show_doc=true
+  pbash.args.has_help "$@" || show_doc=false
+  [ "$show_doc" == "true" ] && echo "${@: -1}" && return 0
+  return 1
+}
+
+
+#============================================================================
+function pbash.args.__updates.need_update {
+  local x="$(wget -q -O - https://pbash.pcapis.com/args/pbash-args.sh | sha256sum | head -c 64)"
+  local e="$(echo -n | sha256sum | head -c 64)"
+  [[ "$x" == "$e" ]] && return 0
+  
+  local y="$(cat /usr/bin/pbash-args.sh | sha256sum | head -c 64)"
+  
+  [ "$x" == "$y" ] || return 1
+  return 0
+}
+
+pbash.args.__updates.need_update || echo "WARNING: pbash-args.sh has a version available. Run 'wget -q -O - https://pbash.pcapis.com/args/install.sh | sudo bash'"
+
+
+#============================================================================
+PBASH_ARGS_SUCCESS=0
+PBASH_ARGS_ERROR=1
+PBASH_ARGS_ERROR_USAGE=2
+PBASH_ARGS_ERROR_NOT_FOUND=40
+
+function pbash.args.errors.get_error_code() {
+  local err="$?"
+  [ "$1" == "" ] || err="$1"
+  printf "%s" "$err"
+}
+
+function pbash.args.errors.echo() {
+  local err="$?"
+  echo -e "\e[01;31m${@}\e[0m"
+  return $err
+}
+
+function pbash.args.errors.is_not_found_error() {
+  local err="$(pbash.args.errors.get_error_code "$@")"
+  [ "$err" == "$PBASH_ARGS_ERROR_NOT_FOUND" ] || return $PBASH_ARGS_ERROR
+  return $PBASH_ARGS_SUCCESS
+}
+
+function pbash.args.errors.is_error() {
+  local err="$(pbash.args.errors.get_error_code "$@")"
+  [ "$err" != "$PBASH_ARGS_SUCCESS" ] || return $PBASH_ARGS_ERROR
+  return $PBASH_ARGS_SUCCESS
+}
+
+function pbash.args.errors.is_success() {
+  pbash.args.errors.is_error "$@" || return $PBASH_ARGS_SUCCESS
+  return $PBASH_ARGS_ERROR
 }
 
 
