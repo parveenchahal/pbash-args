@@ -55,11 +55,16 @@ function pbash.args.has_help() {
   return 1
 }
 
-complete -W "-s --short -l --long -d --default-value -o --out-values-var -r --remaining-args-var" pbash.args.extract
-function pbash.args.extract() {
+function pbash.args.show_doc() {
   local show_doc=true
   pbash.args.has_help "$@" || show_doc=false
-  [ "$show_doc" == "true" ] && cat<<EOF
+  [ "$show_doc" == "true" ] && echo "${@: -1}" && return 0
+  return 1
+}
+
+complete -W "-s --short -l --long -d --default-value -o --out-values-var -r --remaining-args-var" pbash.args.extract
+function pbash.args.extract() {
+  pbash.args.show_doc "$@" "$(cat<<EOF
 Options:
 -s, --short               Short argument key
 -l, --long                Long argument key
@@ -67,7 +72,7 @@ Options:
 -o, --out-values-var      A local varible name where output will be updated
 -r, --remaining-args-var  Remaining argument list, excluding key and value of -s/--short and -l/--long
 EOF
-  [ "$show_doc" == "true" ] && return 0
+)" && return 0
 
   local _____SPLITED_ARGS1_____=()
   local _____SPLITED_ARGS2_____=()
