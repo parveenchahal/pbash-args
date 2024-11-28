@@ -7,7 +7,15 @@ pbash.args.extract parse args and update the value of arg in a local varible nam
 
 Usage:
 arg1_val=""
-pbash.args.extract --l arg1 -o arg1_val -- --arg1 abc
+pbash.args.extract -l arg1: -o arg1_val -- --arg1 abc
+echo $arg1_val  # abc will be printed
+
+force_val=""
+pbash.args.extract -l force -o force_val -- --force=false
+echo $force_val #  false will be printed for a bool argument
+pbash.args.extract -l force -o force_val -- --force
+echo $force_val #  true will be printed for a bool argument
+
 
 Value of arg1 will be updated in arg1_val.
 
