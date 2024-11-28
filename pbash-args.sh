@@ -23,6 +23,17 @@ function pbash.args.errors.is_not_found_error() {
   return $PBASH_ARGS_SUCCESS
 }
 
+function pbash.args.errors.is_error() {
+  local err="$(pbash.args.errors.get_error_code "$@")"
+  [ "$err" != "$PBASH_ARGS_SUCCESS" ] || return $PBASH_ARGS_ERROR
+  return $PBASH_ARGS_SUCCESS
+}
+
+function pbash.args.errors.is_success() {
+  pbu.errors.is_error "$@" || return $PBASH_ARGS_SUCCESS
+  return $PBASH_ARGS_ERROR
+}
+
 complete -W "-s --short -l --long -d --default-value -o --out-values-var -r --remaining-args-var" pbash.args.extract
 function pbash.args.extract() {
   local _____SPLITED_ARGS1_____=()
