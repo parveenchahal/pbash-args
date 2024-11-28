@@ -5,20 +5,20 @@ PBASH_ARGS_ERROR=1
 PBASH_ARGS_ERROR_USAGE=2
 PBASH_ARGS_ERROR_NOT_FOUND=40
 
-function pbash.args.error.get_error_code() {
+function pbash.args.errors.get_error_code() {
   local err="$?"
   [ "$1" == "" ] || err="$1"
   printf "%s" "$err"
 }
 
-function pbash.args.error.echo() {
+function pbash.args.errors.echo() {
   local err="$?"
   echo -e "\e[01;31m${@}\e[0m"
   return $err
 }
 
-function pbash.args.error.is_not_found_error() {
-  local err="$(pbash.args.error.get_error_code "$@")"
+function pbash.args.errors.is_not_found_error() {
+  local err="$(pbash.args.errors.get_error_code "$@")"
   [ "$err" == "$PBASH_ARGS_ERROR_NOT_FOUND" ] || return $PBASH_ARGS_ERROR
   return $PBASH_ARGS_SUCCESS
 }
@@ -45,11 +45,11 @@ function pbash.args.extract() {
 
   ___pbash_extract_arg___ 's:' 'short:' "${internal_args[@]}"
   local short_keys=( "${_____REPLY_____[@]}" )
-  [ ${#short_keys[@]} -lt 2 ] || pbash.args.error.echo "Multiple short args can not be handled" || return $PBASH_ARGS_ERROR_USAGE
+  [ ${#short_keys[@]} -lt 2 ] || echo "Multiple short args can not be handled" || return $PBASH_ARGS_ERROR_USAGE
 
   ___pbash_extract_arg___ 'l:' 'long:' "${internal_args[@]}"
   local long_keys=( "${_____REPLY_____[@]}" )
-  [ ${#long_keys[@]} -lt 2 ] || pbash.args.error.echo "Multiple long args can not be handled" || return $PBASH_ARGS_ERROR_USAGE
+  [ ${#long_keys[@]} -lt 2 ] || pbash.args.errors.echo "Multiple long args can not be handled" || return $PBASH_ARGS_ERROR_USAGE
 
   ___pbash_extract_arg___ 'd:' 'default-value:' "${internal_args[@]}"
   local default_value=( "${_____REPLY_____[@]}" )
@@ -59,7 +59,7 @@ function pbash.args.extract() {
   out_values=( "${_____REPLY_____[@]}" )
   out_remaining_args=( "${_____REMAINING_ARGS_____[@]}" )
 
-  pbash.args.error.is_not_found_error "$err" || return $err
+  pbash.args.errors.is_not_found_error "$err" || return $err
   [ "${#default_value[@]}" != "0" ] || return $err
 
   out_values=( "${default_value[@]}" )
@@ -77,12 +77,12 @@ function pbash.args.delete() {
   local pbash_args_delete_out_values_var_name=()
   pbash.args.extract -s 'o:' -l 'out-values-var:' -o pbash_args_delete_out_values_var_name -- "${internal_args[@]}"
   local err=$?
-  pbash.args.error.is_not_found_error $err && pbash.args.error.echo "-o/--out-values-var is required arg"
+  pbash.args.errors.is_not_found_error $err && pbash.args.errors.echo "-o/--out-values-var is required arg"
   pbash.errors.is_error $err && return $err
 
   pbash.args.extract -r $pbash_args_delete_out_values_var_name "${internal_args[@]}" -- "${external_args[@]}"
   local err=$?
-  pbash.args.error.is_not_found_error $err || return $err
+  pbash.args.errors.is_not_found_error $err || return $err
   return 0
 }
 
@@ -112,7 +112,7 @@ function pbash.args.is_switch_arg_enabled() {
   local k
   for k in "${all_args[@]}"
   do
-    [[ ! "$k" =~ .*:$ ]] || pbash.args.error.echo "pbash.args.is_switch_arg_enabled can't take value args." || return $PBASH_ARGS_ERROR_USAGE
+    [[ ! "$k" =~ .*:$ ]] || pbash.args.errors.echo "pbash.args.is_switch_arg_enabled can't take value args." || return $PBASH_ARGS_ERROR_USAGE
   done
 
   local pbash_args_is_switch_arg_enabled_value=()
@@ -172,12 +172,12 @@ function pbash.args.atleast_one_arg_present() {
   local short_args=()
   pbash.args.extract -s 's:' -l 'short:' -o short_args -- "${internal_args[@]}"
   local err=$?
-  pbash.errors.is_success $err || pbash.args.error.is_not_found_error $err || return $err
+  pbash.errors.is_success $err || pbash.args.errors.is_not_found_error $err || return $err
 
   local long_args=()
   pbash.args.extract -s 'l:' -l 'long:' -o long_args -- "${internal_args[@]}"
   local err=$?
-  pbash.errors.is_success $err || pbash.args.error.is_not_found_error $err || return $err
+  pbash.errors.is_success $err || pbash.args.errors.is_not_found_error $err || return $err
 
   local k
   for k in "${short_args[@]}"
@@ -185,7 +185,7 @@ function pbash.args.atleast_one_arg_present() {
     pbash.args.extract -s "$k" -- "${external_args[@]}"
     err=$?
     pbash.errors.is_success $err && return $PBASH_ARGS_SUCCESS
-    pbash.args.error.is_not_found_error $err || return $err
+    pbash.args.errors.is_not_found_error $err || return $err
   done
 
   for k in "${long_args[@]}"
@@ -193,7 +193,7 @@ function pbash.args.atleast_one_arg_present() {
     pbash.args.extract -l "$k" -- "${external_args[@]}"
     err=$?
     pbash.errors.is_success $err && return $PBASH_ARGS_SUCCESS
-    pbash.args.error.is_not_found_error $err || return $err
+    pbash.args.errors.is_not_found_error $err || return $err
   done
   return $PBASH_ARGS_ERROR
 }
@@ -209,12 +209,12 @@ function pbash.args.all_args_present() {
   local short_args=()
   pbash.args.extract -s 's:' -l 'short:' -o short_args -- "${internal_args[@]}"
   local err=$?
-  pbash.errors.is_success $err || pbash.args.error.is_not_found_error $err || return $err
+  pbash.errors.is_success $err || pbash.args.errors.is_not_found_error $err || return $err
 
   local long_args=()
   pbash.args.extract -s 'l:' -l 'long:' -o long_args -- "${internal_args[@]}"
   local err=$?
-  pbash.errors.is_success $err || pbash.args.error.is_not_found_error $err || return $err
+  pbash.errors.is_success $err || pbash.args.errors.is_not_found_error $err || return $err
 
   local k
   for k in "${short_args[@]}"
@@ -278,7 +278,7 @@ function ___pbash_extract_arg___() {
 
   [ "$short_key" != "" ] ||
   [ "$long_key" != "" ] ||
-  pbash.args.error.echo "At least one of either short or long option is required" || return $PBASH_ARGS_ERROR_USAGE
+  pbash.args.errors.echo "At least one of either short or long option is required" || return $PBASH_ARGS_ERROR_USAGE
 
   local short_is_switch_arg=0
   [ "$short_key" != "" ] && [[ ! "$short_key" =~ .*:$ ]] && short_is_switch_arg=1
@@ -291,7 +291,7 @@ function ___pbash_extract_arg___() {
   [ "$short_key" == "" ] ||
   [ "$long_key" == "" ] ||
   [ "$short_is_switch_arg" == "$long_is_switch_arg" ] ||
-  pbash.args.error.echo "Short and long args should be of same type either switch or key/value." || return $PBASH_ARGS_ERROR_USAGE
+  pbash.args.errors.echo "Short and long args should be of same type either switch or key/value." || return $PBASH_ARGS_ERROR_USAGE
 
   local is_switch_arg=0
   [[ "$short_is_switch_arg" == "1" || "$long_is_switch_arg" == "1" ]] && is_switch_arg=1
@@ -316,7 +316,7 @@ function ___pbash_extract_arg___() {
           local val="${1#"--$long_key="}" ;
           [ "$is_switch_arg" == "0" ] ||
           [[ "$val" == "true" || "$val" == "false" ]] ||
-          pbash.args.error.echo "Invalid valid for --$long_key. Expected true or false." ||
+          pbash.args.errors.echo "Invalid valid for --$long_key. Expected true or false." ||
           return $PBASH_ARGS_ERROR_USAGE ;
 
           reply+=( "$val" ) ;
@@ -326,7 +326,7 @@ function ___pbash_extract_arg___() {
           local val="${1#"-$short_key="}" ;
           [ "$is_switch_arg" == "0" ] ||
           [[ "$val" == "true" || "$val" == "false" ]] ||
-          pbash.args.error.echo "Invalid valid for -$short_key. Expected true or false." ||
+          pbash.args.errors.echo "Invalid valid for -$short_key. Expected true or false." ||
           return $PBASH_ARGS_ERROR_USAGE;
 
           reply+=( "$val" ) ;
