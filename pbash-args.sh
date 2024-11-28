@@ -47,6 +47,14 @@ function pbash.args.errors.is_success() {
   return $PBASH_ARGS_ERROR
 }
 
+function pbash.args.has_help() {
+  for x in "$@"
+  do
+    [[ "$x" == "--help" ]] && return 0
+  done
+  return 1
+}
+
 complete -W "-s --short -l --long -d --default-value -o --out-values-var -r --remaining-args-var" pbash.args.extract
 function pbash.args.extract() {
   local _____SPLITED_ARGS1_____=()
