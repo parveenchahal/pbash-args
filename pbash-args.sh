@@ -240,6 +240,7 @@ function pbash.args.all_args_present() {
 
 #============================================================================
 function pbash.args.has_help() {
+  local x
   for x in "$@"
   do
     [[ "$x" == "--help" ]] && return 0
