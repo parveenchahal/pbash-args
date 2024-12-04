@@ -270,8 +270,8 @@ function pbash.args.__updates.need_update {
 
 pbash.args.__updates.need_update || echo "WARNING: pbash-args.sh has a version available. Run 'wget -q -O - https://pbash.pcapis.com/args/install.sh | sudo bash'"
 
-function pbash.args.__updates.update() {
-  wget -q -O - https://pbash.pcapis.com/args/install.sh | sudo bash
+function pbash.args.update_latest_version() {
+  wget -q -O - https://pbash.pcapis.com/args/install.sh | bash
 }
 
 #============================================================================
