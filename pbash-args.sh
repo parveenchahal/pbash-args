@@ -257,7 +257,7 @@ function pbash.args.show_doc() {
 
 
 #============================================================================
-function pbash.args.__updates.need_update {
+function _pbash.args._updates.need_update {
   local x="$(wget -q -O - https://pbash.pcapis.com/args/pbash-args.sh | sha256sum | head -c 64)"
   local e="$(echo -n | sha256sum | head -c 64)"
   [[ "$x" == "$e" ]] && return 0
@@ -268,7 +268,7 @@ function pbash.args.__updates.need_update {
   return 0
 }
 
-pbash.args.__updates.need_update || echo "WARNING: pbash-args.sh has a version available. Run either 'pbash.args.update_latest_version' or 'wget -q -O - https://pbash.pcapis.com/args/install.sh | sudo bash'"
+_pbash.args._updates.need_update || echo "WARNING: pbash-args.sh has a version available. Run either 'pbash.args.update_latest_version' or 'wget -q -O - https://pbash.pcapis.com/args/install.sh | sudo bash'"
 
 function pbash.args.update_latest_version() {
   wget -q -O - https://pbash.pcapis.com/args/install.sh | sudo bash
