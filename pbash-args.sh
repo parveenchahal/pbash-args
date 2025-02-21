@@ -239,7 +239,7 @@ function pbash.args.all_args_present() {
 
 
 #============================================================================
-function pbash.args.has_help() {
+function _pbash.args.has_help() {
   local x
   for x in "$@"
   do
@@ -250,7 +250,7 @@ function pbash.args.has_help() {
 
 function pbash.args.show_doc() {
   local show_doc=true
-  pbash.args.has_help "$@" || show_doc=false
+  _pbash.args.has_help "$@" || show_doc=false
   [ "$show_doc" == "true" ] && echo "${@: -1}" && return 0
   return 1
 }
