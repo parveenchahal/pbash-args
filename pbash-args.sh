@@ -2,7 +2,7 @@
 
 complete -W "-s --short -l --long -d --default-value -o --out-values-var -r --remaining-args-var --help" pbash.args.extract
 function pbash.args.extract() {
-  pbash.args.show_doc "$@" "$(cat<<EOF
+  _pbash.args.show_doc "$@" "$(cat<<EOF
 pbash.args.extract parse args and update the value of arg in a local varible name provided in -o/--out-values-var.
 
 Usage:
@@ -248,7 +248,7 @@ function _pbash.args.has_help() {
   return 1
 }
 
-function pbash.args.show_doc() {
+function _pbash.args.show_doc() {
   local show_doc=true
   _pbash.args.has_help "$@" || show_doc=false
   [ "$show_doc" == "true" ] && echo "${@: -1}" && return 0
