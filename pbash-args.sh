@@ -262,7 +262,7 @@ function _pbash.args._updates.need_update {
   local e="$(echo -n | sha256sum | head -c 64)"
   [[ "$x" == "$e" ]] && return 0
   
-  local y="$(cat /usr/bin/pbash-args.sh | sha256sum | head -c 64)"
+  local y="$(cat /usr/local/bin/pbash-args.sh | sha256sum | head -c 64)"
   
   [ "$x" == "$y" ] || return 1
   return 0
