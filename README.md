@@ -1,7 +1,7 @@
 
 # Installation
 ```sh
-wget -q -O - https://pbash.pcapis.com/args/install.sh | sudo bash
+curl -sL https://pbash.pcapis.com/args/install.sh | sudo bash
 ```
 
 # Supported functions
