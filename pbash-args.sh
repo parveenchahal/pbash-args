@@ -261,8 +261,9 @@ function _pbash.args._updates.need_update {
   local x="$(curl -sL https://pbash.pcapis.com/args/pbash-args.sh | sha256sum | head -c 64)"
   local e="$(echo -n | sha256sum | head -c 64)"
   [[ "$x" == "$e" ]] && return 0
-  
-  local y="$(cat /usr/local/bin/pbash-args.sh | sha256sum | head -c 64)"
+  local installed_file=/usr/local/bin/pbash-args.sh
+  [ -f $installed_file ] || installed_file=$HOME/.local/bin/pbash-args.sh
+  local y="$(cat $installed_file | sha256sum | head -c 64)"
   
   [ "$x" == "$y" ] || return 1
   return 0
