@@ -272,7 +272,14 @@ function _pbash.args._updates.need_update {
 _pbash.args._updates.need_update || echo "WARNING: pbash-args.sh has a version available. Run either 'pbash.args.update_latest_version' or 'curl -sL https://pbash.pcapis.com/args/install.sh | sudo bash'"
 
 function pbash.args.update_latest_version() {
-  curl -sL https://pbash.pcapis.com/args/install.sh | sudo bash
+  local installation_path="$(which pbash-args.sh)"
+  if [ "$installation_path" == "/usr/local/bin/pbash-args.sh" ]
+  then
+    curl -sL https://pbash.pcapis.com/args/install.sh | sudo bash -s -- --system
+    return $?
+  fi
+  curl -sL https://pbash.pcapis.com/args/install.sh | bash -s -- --user
+  return $?
 }
 
 #============================================================================
