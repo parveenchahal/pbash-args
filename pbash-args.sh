@@ -269,7 +269,7 @@ function _pbash.args._updates.need_update {
   return 0
 }
 
-_pbash.args._updates.need_update || echo "WARNING: pbash-args.sh has a version available. Run either 'pbash.args.update_latest_version' or 'curl -sL https://pbash.pcapis.com/args/install.sh | sudo bash'"
+_pbash.args._updates.need_update || echo "WARNING: pbash-args.sh has a version available. Run either 'pbash.args.update_latest_version' or follow installation instructions from https://github.com/parveenchahal/pbash-args"
 
 function pbash.args.update_latest_version() {
   local installation_path="$(which pbash-args.sh)"
