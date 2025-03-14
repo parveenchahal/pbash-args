@@ -258,6 +258,7 @@ function _pbash.args.show_doc() {
 
 #============================================================================
 function _pbash.args._updates.need_update {
+  source pbash-args.sh
   local x="$(curl -sL https://pbash.pcapis.com/args/pbash-args.sh | sha256sum | head -c 64)"
   local e="$(echo -n | sha256sum | head -c 64)"
   [[ "$x" == "$e" ]] && return 0
