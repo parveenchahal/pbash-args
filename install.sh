@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 installation_type=$1
 installation_path=""
 [ "$installation_type" == "--system" ] && installation_path="/usr/local/bin/pbash-args.sh"
