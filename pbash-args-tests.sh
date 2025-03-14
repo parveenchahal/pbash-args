@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 source <(wget -q -O - https://pbash.pcapis.com/args/pbash-args.sh)
 
 result=()
