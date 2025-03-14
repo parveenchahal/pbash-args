@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 complete -W "-s --short -l --long -d --default-value -o --out-values-var -r --remaining-args-var --help" pbash.args.extract
 function pbash.args.extract() {
