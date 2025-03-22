@@ -69,6 +69,27 @@ EOF
   return 0
 }
 
+complete -W "--args1 --args2" pbash.args.split_with_double_hyphen
+function pbash.args.split_with_double_hyphen() {
+  local _____SPLITED_ARGS1_____=()
+  local _____SPLITED_ARGS2_____=()
+  ___pbash_split_args_by_double_hyphen___ "$@" || return $PBASH_ARGS_ERROR_USAGE
+  local _____internal_args_____=( "${_____SPLITED_ARGS1_____[@]}" )
+  local _____external_args_____=( "${_____SPLITED_ARGS2_____[@]}" )
+
+  local _____args1_____
+  local _____args2_____
+  pbash.args.extract -l args1: -o _____args1_____ -- "${_____internal_args_____[@]}" || { pbash.args.errors.echo "--args1 is required"; return $PBASH_ARGS_ERROR_USAGE; }
+  pbash.args.extract -l args2: -o _____args2_____ -- "${_____internal_args_____[@]}" || { pbash.args.errors.echo "--args2 is required"; return $PBASH_ARGS_ERROR_USAGE; }
+  _____SPLITED_ARGS1_____=()
+  _____SPLITED_ARGS2_____=()
+  ___pbash_split_args_by_double_hyphen___ "${_____external_args_____[@]}" || return $PBASH_ARGS_ERROR_USAGE
+  local -n _____args1_ref_____="$_____args1_____"
+  local -n _____args2_ref_____="$_____args2_____"
+  _____args1_ref_____=( ${_____SPLITED_ARGS1_____[@]} )
+  _____args2_ref_____=( ${_____SPLITED_ARGS2_____[@]} )
+}
+
 complete -W "-s --short -l --long -o --out-values-var" pbash.args.delete
 function pbash.args.delete() {
   local _____SPLITED_ARGS1_____=()
