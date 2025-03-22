@@ -86,8 +86,8 @@ function pbash.args.split_with_double_hyphen() {
   ___pbash_split_args_by_double_hyphen___ "${_____external_args_____[@]}" || return $PBASH_ARGS_ERROR_USAGE
   local -n _____args1_ref_____="$_____args1_____"
   local -n _____args2_ref_____="$_____args2_____"
-  _____args1_ref_____=( ${_____SPLITED_ARGS1_____[@]} )
-  _____args2_ref_____=( ${_____SPLITED_ARGS2_____[@]} )
+  _____args1_ref_____=( "${_____SPLITED_ARGS1_____[@]}" )
+  _____args2_ref_____=( "${_____SPLITED_ARGS2_____[@]}" )
 }
 
 complete -W "-s --short -l --long -o --out-values-var" pbash.args.delete
