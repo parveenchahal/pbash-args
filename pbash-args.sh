@@ -48,7 +48,7 @@ EOF
 
   ___pbash_extract_arg___ 's:' 'short:' "${internal_args[@]}"
   local short_keys=( "${_____REPLY_____[@]}" )
-  [ ${#short_keys[@]} -lt 2 ] || echo "Multiple short args can not be handled" || return $PBASH_ARGS_ERROR_USAGE
+  [ ${#short_keys[@]} -lt 2 ] || pbash.args.errors.echo "Multiple short args can not be handled" || return $PBASH_ARGS_ERROR_USAGE
 
   ___pbash_extract_arg___ 'l:' 'long:' "${internal_args[@]}"
   local long_keys=( "${_____REPLY_____[@]}" )
