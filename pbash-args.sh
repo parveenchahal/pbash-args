@@ -346,6 +346,9 @@ function ___pbash_split_args_by_double_hyphen___() {
   local -n args1='_____SPLITED_ARGS1_____'
   local -n args2='_____SPLITED_ARGS2_____'
 
+  args1=()
+  args2=()
+
   local found_split=0
 
   while [ $# -gt 0 ]
@@ -361,9 +364,7 @@ function ___pbash_split_args_by_double_hyphen___() {
   done
   if [ $found_split == 0 ]
   then
-    args1=()
-    args2=()
-    return 1
+    return
   fi
   args2=( "${@}" )
 }
